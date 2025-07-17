@@ -1,18 +1,42 @@
-## Getting Started
+# 🏦 Sistema Bancário com Contas e Transações
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Este é um sistema bancário simples, desenvolvido em **Java** com conexão a um banco de dados **MySQL**, permitindo a criação e gerenciamento de contas bancárias.
 
-## Folder Structure
+## 🚀 Pré-requisitos
 
-The workspace contains two folders by default, where:
+Antes de iniciar, certifique-se de ter os seguintes programas instalados:
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+- [MySQL Workbench](https://www.mysql.com/products/workbench/) — para gerenciar o banco de dados.
+- [MySQL Server](https://dev.mysql.com/downloads/mysql/) — instalado junto com o Workbench.
+- Uma IDE Java (ex: [IntelliJ IDEA](https://www.jetbrains.com/idea/), [Eclipse](https://www.eclipse.org/), ou [VSCode](https://code.visualstudio.com/)).
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## ⚙️ Configuração do banco de dados
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+1. **Abra o MySQL Workbench**  
+2. Faça login com o usuário:  
+   - **Usuário:** `root`  
+   - **Senha:** `root` (ou altere no código conforme sua configuração)  
+3. Execute o arquivo `SistemaBancário.sql` para criar o banco e as tabelas.
 
-## Dependency Management
+✨ Funcionalidades
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+### Funcionalidades já implementadas ✅
+
+- ✅ Criar conta (CPF, senha, RG, nome completo, data de nascimento, número)
+- ✅ Login com a conta criada
+- ✅ Visualizar saldo
+- ✅ Depositar
+- ✅ Sacar
+- ✅ Remover conta
+
+### Funcionalidades em desenvolvimento 🔄
+
+- 🔄 Transferir entre contas
+- 🔄 Atualizar dados do cliente
+
+## 🛠 Como executar
+
+1. **Clone o repositório:**
+
+```bash
+git clone https://github.com/seu-usuario/seu-repositorio.git
