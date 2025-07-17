@@ -252,7 +252,7 @@ public class Cadastro {
 
             ps.executeUpdate();
 
-            System.out.println("\nConta Bancaria cadastrada com sucesso!\n");
+            System.out.println("\nConta Bancaria cadastrada com sucesso!");
 
             conn.close();
             ps.close();
