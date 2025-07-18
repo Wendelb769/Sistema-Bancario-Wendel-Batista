@@ -28,12 +28,12 @@ Antes de iniciar, certifique-se de ter os seguintes programas instalados:
 - ✅ Depositar
 - ✅ Sacar
 - ✅ Remover conta
+- ✅ Visualizar dados do cliente
 
 ### Funcionalidades em desenvolvimento 🔄
 
 - 🔄 Transferir entre contas
 - 🔄 Atualizar dados do cliente
-- 🔄 Visualizar dados do cliente
 
 ## 🛠 Como executar
 
