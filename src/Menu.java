@@ -78,7 +78,7 @@ public class Menu {
             }
 
             case "5":{
-                banco.atualizarDados();
+                banco.visualizarDadosPessoais();
                 break;
             }
 

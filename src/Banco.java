@@ -152,7 +152,35 @@ public class Banco {
     }
 
     public void visualizarDadosPessoais(){
-        
+        try{
+            Connection conn = DriverManager.getConnection(ConexaoMySQL.url, ConexaoMySQL.usuario, ConexaoMySQL.senha);
+            String sql = "SELECT cpf, senha, rg, nomeCompleto, dataNascimento, numero FROM usuario WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            cb.buscarIdPorCpf();
+
+            ps.setInt(1, cb.getId());
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()){
+                System.out.print("\nDados pessoais do usuário\n");
+                System.out.print("\nNome: " + rs.getString("nomeCompleto"));
+                System.out.print("\nCPF: " + rs.getString("cpf"));
+                System.out.print("\nSenha: " + rs.getString("senha"));
+                System.out.print("\nRG: " + rs.getString("rg"));
+                System.out.print("\nData de nascimento: " + rs.getString("dataNascimento"));
+                System.out.print("\nNúmero: " + rs.getString("numero") + "\n");
+                Menu.menuPosLogin();
+
+            } else{
+                System.out.print("\nDados pessoais não encontrados.");
+                Menu.menuPosLogin();
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public void atualizarDados(){
