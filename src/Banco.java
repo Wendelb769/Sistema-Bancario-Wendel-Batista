@@ -151,6 +151,10 @@ public class Banco {
         }       
     }
 
+    public void visualizarDadosPessoais(){
+        
+    }
+
     public void atualizarDados(){
 
     }

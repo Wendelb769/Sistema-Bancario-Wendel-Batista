@@ -47,9 +47,10 @@ public class Menu {
         System.out.print("\n[2] - Sacar");
         System.out.print("\n[3] - Transferir");
         System.out.print("\n[4] - Visualizar saldo");
-        System.out.print("\n[5] - Atualizar dados");
-        System.out.print("\n[6] - Excluir conta");
-        System.out.print("\n[7] - Sair\n");
+        System.out.print("\n[5] - Visualizar dados pessoais");
+        System.out.print("\n[6] - Atualizar dados pessoais");
+        System.out.print("\n[7] - Excluir conta");
+        System.out.print("\n[8] - Sair\n");
 
         System.out.print("\nInsira sua opção conforme os números acima: ");
 
@@ -82,11 +83,16 @@ public class Menu {
             }
 
             case "6":{
-                banco.excluirConta();
+                banco.atualizarDados();
                 break;
             }
 
             case "7":{
+                banco.excluirConta();
+                break;
+            }
+
+            case "8":{
                 System.out.print("\nVoltando para o menu\n");
                 menuInicial();
             }
