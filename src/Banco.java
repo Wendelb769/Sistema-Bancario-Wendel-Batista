@@ -184,6 +184,95 @@ public class Banco {
     }
 
     public void atualizarDados(){
+        try{
+            Connection conn = DriverManager.getConnection(ConexaoMySQL.url, ConexaoMySQL.usuario, ConexaoMySQL.senha);
+            String sql = "";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            Usuario usuario = new Usuario();
+
+            cb.buscarIdPorCpf();
+        
+            String escolha = "0";
+            Scanner sc = new Scanner(System.in);
+
+            System.out.print("\n[1] - Alterar o nome");
+            System.out.print("\n[2] - Alterar a senha");
+            System.out.print("\n[3] - Alterar o RG");
+            System.out.print("\n[4] - Alterar a data de nascimento");
+            System.out.print("\n[5] - ALterar o número");
+            System.out.print("\n[6] - Voltar\n");
+
+            System.out.print("\nInsira sua opção conforme os números acima: ");
+
+            escolha = sc.nextLine();
+            switch (escolha){
+                case "1":
+
+                System.out.print("\nInforme seu nome completo: ");
+                usuario.setNomeCompleto(sc.nextLine());
+
+                if(!usuario.getNomeCompleto().matches("[a-zA-Z ]+")){
+                    System.out.print("\nInsira seu nome completo, sem números!");
+                    System.out.print("\n1 - Alterar dados pessoais");
+                    System.out.print("\n2 - Sair");
+                    System.out.print("\nDigite o que deseja fazer: ");
+
+                    escolha = sc.nextLine();
+
+                    if (escolha.equals("1")){
+                        atualizarDados();
+
+                    } else if(escolha.equals("2")){
+                        System.out.print("\nPrograma encerrado.");
+                        System.exit(0);
+
+                    } else{
+                        System.out.print("\nEssa opção não existe, portanto o programa será encerrado.");
+                        System.exit(0);
+                    }
+
+                } else {
+
+                    sql = "UPDATE usuario SET nomeCompleto = ? WHERE id_usuario = ?";
+                    ps.setString(1, usuario.getNomeCompleto());
+                    ps.setInt(2, cb.getId());
+
+                    ps.executeUpdate();
+
+                    System.out.println("\nSeu nome foi alterado com sucesso.\n");
+                    atualizarDados();
+                }
+
+                break;
+
+                case "2":
+
+                break;
+
+                case "3":
+
+                break;
+
+                case "4":
+
+                break;
+
+                case "5":
+
+                break;
+
+                case "6":
+                Menu.menuPosLogin();
+
+                break;
+
+            }
+            sc.close();
+
+        } catch(SQLException e){
+
+        }
 
     }
 
