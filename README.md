@@ -29,11 +29,11 @@ Antes de iniciar, certifique-se de ter os seguintes programas instalados:
 - ✅ Sacar
 - ✅ Remover conta
 - ✅ Visualizar dados do cliente
+- ✅ Atualizar dados do cliente
 
-### Funcionalidades em desenvolvimento 🔄
+### Funcionalidades em desenvolvimento ⏳
 
-- 🔄 Transferir entre contas
-- 🔄 Atualizar dados do cliente
+- ⏳ Transferir entre contas
 
 ## 🛠 Como executar
 

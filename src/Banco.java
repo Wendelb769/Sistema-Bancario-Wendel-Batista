@@ -11,9 +11,10 @@ import java.util.InputMismatchException;
 public class Banco {
 
     ContaBancária cb = new ContaBancária();
+    Usuario usuario = new Usuario();
+    Scanner sc = new Scanner(System.in);
 
     public void depositar(){
-        Scanner sc = new Scanner(System.in);
         BigDecimal deposito = null;
 
         try{
@@ -64,7 +65,6 @@ public class Banco {
     }
 
     public void sacar(){
-        Scanner sc = new Scanner(System.in);
         BigDecimal valorSaque = null;
 
         try{
@@ -73,6 +73,7 @@ public class Banco {
 
             Connection conn = DriverManager.getConnection(ConexaoMySQL.url, ConexaoMySQL.usuario, ConexaoMySQL.senha);
             String sql = "UPDATE contaBancaria SET saldo = ? WHERE id_usuario = ?";
+            
             PreparedStatement ps = conn.prepareStatement(sql);
 
             System.out.print("\nInsira em R$ quanto deseja sacar: ");
@@ -119,6 +120,8 @@ public class Banco {
     }
 
     public void transferir(){
+        System.out.print("Em andamento...");
+        Menu.menuPosLogin();
 
     }
 
@@ -184,96 +187,233 @@ public class Banco {
     }
 
     public void atualizarDados(){
-        try{
+        try {
             Connection conn = DriverManager.getConnection(ConexaoMySQL.url, ConexaoMySQL.usuario, ConexaoMySQL.senha);
-            String sql = "";
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            Usuario usuario = new Usuario();
+            String sqlNome = "UPDATE usuario SET nomeCompleto = ? WHERE id = ?";
+            String sqlSenha = "UPDATE usuario SET senha = ? WHERE id = ?";
+            String sqlRg = "UPDATE usuario SET rg = ? WHERE id = ?";
+            String sqlDataNascimento = "UPDATE usuario SET dataNascimento = ? WHERE id = ?";
+            String sqlNumero = "UPDATE usuario SET numero = ? WHERE id = ?";
+            
+            PreparedStatement psNome = conn.prepareStatement(sqlNome);
+            PreparedStatement psSenha = conn.prepareStatement(sqlSenha);
+            PreparedStatement psRg = conn.prepareStatement(sqlRg);
+            PreparedStatement psDataNacimento = conn.prepareStatement(sqlDataNascimento);
+            PreparedStatement psNumero = conn.prepareStatement(sqlNumero);
 
             cb.buscarIdPorCpf();
-        
-            String escolha = "0";
-            Scanner sc = new Scanner(System.in);
 
+            String escolha = "0";
             System.out.print("\n[1] - Alterar o nome");
             System.out.print("\n[2] - Alterar a senha");
             System.out.print("\n[3] - Alterar o RG");
             System.out.print("\n[4] - Alterar a data de nascimento");
-            System.out.print("\n[5] - ALterar o número");
+            System.out.print("\n[5] - Alterar o número");
             System.out.print("\n[6] - Voltar\n");
 
             System.out.print("\nInsira sua opção conforme os números acima: ");
 
             escolha = sc.nextLine();
-            switch (escolha){
+
+            switch (escolha) {
                 case "1":
 
-                System.out.print("\nInforme seu nome completo: ");
-                usuario.setNomeCompleto(sc.nextLine());
+                    System.out.print("\nInforme seu nome completo: ");
+                    usuario.setNomeCompleto(sc.nextLine());
 
-                if(!usuario.getNomeCompleto().matches("[a-zA-Z ]+")){
-                    System.out.print("\nInsira seu nome completo, sem números!");
-                    System.out.print("\n1 - Alterar dados pessoais");
-                    System.out.print("\n2 - Sair");
-                    System.out.print("\nDigite o que deseja fazer: ");
+                    if(!usuario.getNomeCompleto().matches("[a-zA-Z ]+")){
+                        System.out.print("\nInsira seu nome completo, sem números!");
+                        System.out.print("\n1 - Alterar dados pessoais");
+                        System.out.print("\n2 - Sair");
+                        System.out.print("\nDigite o que deseja fazer: ");
 
-                    escolha = sc.nextLine();
+                        escolha = sc.nextLine();
 
-                    if (escolha.equals("1")){
+                        if (escolha.equals("1")){
+                            atualizarDados();
+
+                        } else if(escolha.equals("2")){
+                            Menu.menuPosLogin();
+
+                        } else{
+                            System.out.print("\nEssa opção não existe, portanto o programa será encerrado.");
+                            System.exit(0);
+                        }
+
+                    } else {
+                        
+                        psNome.setString(1, usuario.getNomeCompleto());
+                        psNome.setInt(2, cb.getId());
+
+                        psNome.executeUpdate();
+
+                        System.out.println("\nSeu nome foi alterado com sucesso.");
                         atualizarDados();
-
-                    } else if(escolha.equals("2")){
-                        System.out.print("\nPrograma encerrado.");
-                        System.exit(0);
-
-                    } else{
-                        System.out.print("\nEssa opção não existe, portanto o programa será encerrado.");
-                        System.exit(0);
                     }
-
-                } else {
-
-                    sql = "UPDATE usuario SET nomeCompleto = ? WHERE id_usuario = ?";
-                    ps.setString(1, usuario.getNomeCompleto());
-                    ps.setInt(2, cb.getId());
-
-                    ps.executeUpdate();
-
-                    System.out.println("\nSeu nome foi alterado com sucesso.\n");
-                    atualizarDados();
-                }
-
-                break;
+                    
+                    break;
 
                 case "2":
 
-                break;
+                    System.out.print("\nCrie uma SENHA de exatamente 8 digitos que será utilizada para acessar sua conta (letras ou números): ");
+                    usuario.setSenha(sc.nextLine());
+
+                    if(usuario.getSenha().length() != 8){
+                        System.out.print("\nInsira exatamente 8 digitos para sua senha, conforme o exemplo a seguir: 'abcdfghi' ou '12345678'");
+                        System.out.print("\n1 - Alterar dados pessoais");
+                        System.out.print("\n2 - Sair");
+                        System.out.print("\nDigite o que deseja fazer: ");
+                        escolha = sc.nextLine();
+
+                        if (escolha.equals("1")){
+                            atualizarDados();
+
+                        } else if(escolha.equals("2")){
+                            Menu.menuPosLogin();
+
+                        } else{
+                            System.out.print("\nEssa opção não existe, portanto o programa será encerrado.");
+                            System.exit(0);
+                        }
+
+                    } else {
+                        
+                        psSenha.setString(1, usuario.getSenha());
+                        psSenha.setInt(2, cb.getId());
+
+                        psSenha.executeUpdate();
+
+                        SessãoLogin.setSenha(usuario.getSenha());
+
+                        System.out.println("\nSua senha foi alterada com sucesso.");
+                        atualizarDados();
+                    }
+                    
+                    break;
 
                 case "3":
 
-                break;
+                    System.out.print("\nInforme seu RG com exatamente 10 digitos, (apenas números): ");
+                    usuario.setRg(sc.nextLine());
+
+                    if(!usuario.getRg().matches("\\d{10}")){
+                        System.out.print("\nInsira exatamente os 10 digitos do seu RG, conforme o exemplo a seguir: '0123456789'");
+                        System.out.print("\n1 - Alterar dados pessoais");
+                        System.out.print("\n2 - Sair");
+                        System.out.print("\nDigite o que deseja fazer: ");
+                        escolha = sc.nextLine();
+
+                        if (escolha.equals("1")){
+                            atualizarDados();
+
+                        } else if(escolha.equals("2")){
+                            Menu.menuPosLogin();
+
+                        } else{
+                            System.out.print("\nEssa opção não existe, portanto o programa será encerrado.");
+                            System.exit(0);
+                        }
+
+                    } else {
+                        
+                        psRg.setString(1, usuario.getRg());
+                        psRg.setInt(2, cb.getId());
+
+                        psRg.executeUpdate();
+
+                        System.out.println("\nSeu RG foi alterado com sucesso.");
+                        atualizarDados();
+                    }
+                    
+                    break;
 
                 case "4":
 
-                break;
+                    System.out.print("\nInsira sua data de nascimento: ");
+                    usuario.setDataNascimento(sc.nextLine());
+
+                    if (!usuario.getDataNascimento().matches("\\d{2}/\\d{2}/\\d{4}")){
+                        System.out.print("\nInsira a data de nascimento de acordo com esse exemplo: DD/MM/AAAA");
+
+                        System.out.print("\n1 - Alterar dados pessoais");
+                        System.out.print("\n2 - Sair");
+                        System.out.print("\nDigite o que deseja fazer: ");
+                        escolha = sc.nextLine();
+
+                            if (escolha.equals("1")){
+                                atualizarDados();
+
+                            } else if(escolha.equals("2")){
+                                Menu.menuPosLogin();
+
+                            } else{
+                                System.out.print("\nEssa opção não existe, portanto o programa será encerrado.");
+                                System.exit(0);
+                            }
+
+                        } else {
+                            
+                            psDataNacimento.setString(1, usuario.getDataNascimento());
+                            psDataNacimento.setInt(2, cb.getId());
+
+                            psDataNacimento.executeUpdate();
+
+                            System.out.println("\nSua data de nascimento foi alterada com sucesso.");
+                            atualizarDados();
+                        }
+
+                        break;
 
                 case "5":
 
-                break;
+                    System.out.print("\nInsira o seu número de celular com 11 digitos (DDD incluído): ");
+                    usuario.setNumero(sc.nextLine());
 
-                case "6":
-                Menu.menuPosLogin();
+                    if (!usuario.getNumero().matches("\\d{11}")){
+                        System.out.print("\nInsira seu número de telefone conforme o exemplo: '71912345678' (com um total de 11 digitos incluindo o DDD)");
+                        System.out.print("\n1 - Alterar dados pessoais");
+                        System.out.print("\n2 - Sair");
+                        System.out.print("\nDigite o que deseja fazer: ");
 
-                break;
+                        escolha = sc.nextLine();
 
+                            if (escolha.equals("1")){
+                                atualizarDados();
+
+                            } else if(escolha.equals("2")){
+                                Menu.menuPosLogin();
+
+                            } else{
+                                System.out.print("\nEssa opção não existe, portanto o programa será encerrado.");
+                                System.exit(0);
+                            }
+
+                        } else {
+                            
+                            psNumero.setString(1, usuario.getNumero());
+                            psNumero.setInt(2, cb.getId());
+
+                            psNumero.executeUpdate();
+
+                            System.out.println("\nSeu número foi alterada com sucesso.");
+                            atualizarDados();
+                        }
+
+                        break;
+
+                    case "6":
+                        Menu.menuPosLogin();
+                        break;
+            
+                default:
+                    System.out.print("\nEssa opção não está disponível.\n");
+                    atualizarDados();
+                    break;
             }
-            sc.close();
 
-        } catch(SQLException e){
-
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
     }
 
     public void excluirConta(){
@@ -285,7 +425,6 @@ public class Banco {
             String sql = "DELETE FROM usuario WHERE cpf = ? AND senha = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            Scanner sc = new Scanner(System.in);
             System.out.print("\nTem certeza que deseja excluir a conta?");
             System.out.print("\n[1] - Sim");
             System.out.print("\n[2] - Não");
@@ -332,6 +471,5 @@ public class Banco {
         } catch(SQLException e){
             e.printStackTrace();
         }
-
     }
 }

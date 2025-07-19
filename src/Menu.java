@@ -93,7 +93,7 @@ public class Menu {
             }
 
             case "8":{
-                System.out.print("\nVoltando para o menu\n");
+                System.out.print("\nRetornando ao menu de cadastro e login\n");
                 menuInicial();
             }
 
