@@ -243,12 +243,13 @@ public class Cadastro {
 
             String sql;
 
-            sql = "INSERT INTO contaBancaria (id_usuario, saldo) VALUES (?, ?)";
+            sql = "INSERT INTO contaBancaria (id_usuario, cpf_usuario, saldo) VALUES (?, ?, ?)";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setInt(1, cb.getId());
-            ps.setBigDecimal(2, new BigDecimal("0.00"));
+            ps.setString(2, usuario.getCpf());
+            ps.setBigDecimal(3, new BigDecimal("0.00"));
 
             ps.executeUpdate();
 

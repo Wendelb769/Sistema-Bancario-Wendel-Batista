@@ -28,12 +28,9 @@ Antes de iniciar, certifique-se de ter os seguintes programas instalados:
 - ✅ Depositar
 - ✅ Sacar
 - ✅ Remover conta
-- ✅ Visualizar dados do cliente
-- ✅ Atualizar dados do cliente
-
-### Funcionalidades em desenvolvimento ⏳
-
-- ⏳ Transferir entre contas
+- ✅ Visualizar dados do usuário
+- ✅ Atualizar dados do usuário
+- ✅ Transferir dinheiro entre contas
 
 ## 🛠 Como executar
 

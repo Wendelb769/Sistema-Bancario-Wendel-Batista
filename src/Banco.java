@@ -22,7 +22,7 @@ public class Banco {
             cb.buscarSaldo();
 
             Connection conn = DriverManager.getConnection(ConexaoMySQL.url, ConexaoMySQL.usuario, ConexaoMySQL.senha);
-            String sql = "UPDATE contaBancaria SET saldo = ? WHERE id_usuario = ?";
+            String sql = "UPDATE contaBancaria SET saldo = saldo + ? WHERE id_usuario = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             System.out.print("\nInforme a quantia em R$ que deseja depositar: ");
@@ -40,9 +40,8 @@ public class Banco {
                 Menu.menuPosLogin();
 
             } else{
-                cb.setSaldo(cb.getSaldo().add(deposito));
 
-                ps.setBigDecimal(1, cb.getSaldo());
+                ps.setBigDecimal(1, deposito);
                 ps.setInt(2, cb.getId());
 
                 ps.executeUpdate();
@@ -72,7 +71,7 @@ public class Banco {
             cb.buscarSaldo();
 
             Connection conn = DriverManager.getConnection(ConexaoMySQL.url, ConexaoMySQL.usuario, ConexaoMySQL.senha);
-            String sql = "UPDATE contaBancaria SET saldo = ? WHERE id_usuario = ?";
+            String sql = "UPDATE contaBancaria SET saldo = saldo - ? WHERE id_usuario = ?";
             
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -96,9 +95,8 @@ public class Banco {
             Menu.menuPosLogin();
 
             } else{
-                cb.setSaldo(cb.getSaldo().subtract(valorSaque));
 
-                ps.setBigDecimal(1, cb.getSaldo());
+                ps.setBigDecimal(1, valorSaque);
                 ps.setInt(2, cb.getId());
 
                 ps.executeUpdate();
@@ -120,8 +118,87 @@ public class Banco {
     }
 
     public void transferir(){
-        System.out.print("Em andamento...");
-        Menu.menuPosLogin();
+        try{
+
+            cb.buscarIdPorCpf();
+            cb.buscarSaldo();
+            
+            Connection conn = DriverManager.getConnection(ConexaoMySQL.url, ConexaoMySQL.usuario, ConexaoMySQL.senha);
+            BigDecimal dinheiroTransferencia = null;
+            String contaCpf = null;
+            String escolha = null;
+
+            String sqlTransferencia = "UPDATE contaBancaria SET saldo = saldo - ? WHERE id_usuario = ?";
+            PreparedStatement psTransferencia = conn.prepareStatement(sqlTransferencia);
+
+            System.out.print("\nInsira em R$ quanto deseja transferir: ");
+
+            try{
+                dinheiroTransferencia = sc.nextBigDecimal().setScale(2, RoundingMode.HALF_UP);
+
+            } catch(InputMismatchException e){
+                System.out.print("\nInsira um valor válido para transferir.");
+                Menu.menuPosLogin();
+
+            }
+
+            if (dinheiroTransferencia.compareTo(cb.getSaldo()) > 0){
+            System.out.print("\nSaldo insuficiente.\n");
+            Menu.menuPosLogin();
+
+            } else if (dinheiroTransferencia.compareTo(BigDecimal.ZERO) <= 0){
+            System.out.print("\nNão é possível transferir esse valor\n");
+            Menu.menuPosLogin();
+
+            } else{
+
+                psTransferencia.setBigDecimal(1, dinheiroTransferencia);
+                psTransferencia.setInt(2, cb.getId());
+
+                psTransferencia.executeUpdate();
+
+                String sqlContaCpf = "UPDATE contaBancaria SET saldo = saldo + ? WHERE cpf_usuario = ?";
+                PreparedStatement psContaCpf = conn.prepareStatement(sqlContaCpf);
+
+                System.out.print("\nInsira o CPF da conta que deseja tranferir R$ " + dinheiroTransferencia + ": ");
+                sc.nextLine();
+                contaCpf = sc.nextLine();
+
+                if (!contaCpf.matches("\\d{11}")){
+                    System.out.print("\nInsira exatamente os 11 digitos do seu CPF, conforme o exemplo a seguir: '11111111111' ");
+                    System.out.print("\n1 - Transferir dinheiro");
+                    System.out.print("\n2 - Sair");
+                    System.out.print("\nInsira o que deseja fazer: ");
+
+                    escolha = sc.nextLine();
+        
+                    if (escolha.equals("1")){
+                        transferir();
+
+                    } else if(escolha.equals("2")){
+                        System.out.print("\nPrograma encerrado.");
+                        System.exit(0);
+
+                    } else{
+                        System.out.print("\nEssa opção não existe, portanto o programa será encerrado.");
+                        System.exit(0);
+                    }
+                } else{
+                    psContaCpf.setBigDecimal(1, dinheiroTransferencia);
+                    psContaCpf.setString(2, contaCpf);
+
+                    psContaCpf.executeUpdate();
+
+                    System.out.println("\nTransferência realizada com sucesso.");
+                    Menu.menuPosLogin();
+                }
+                
+            }
+        }
+
+        catch(SQLException e){
+
+        }
 
     }
 

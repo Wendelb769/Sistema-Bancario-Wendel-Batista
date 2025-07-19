@@ -25,16 +25,22 @@ CHECK(CHAR_LENGTH(numero) = 11)
 CREATE TABLE contaBancaria(
 id_conta INT AUTO_INCREMENT PRIMARY KEY,
 id_usuario INT NOT NULL,
+cpf_usuario VARCHAR(11) NOT NULL,
+
 saldo DECIMAL (10, 2) DEFAULT 0.00,
 
 CONSTRAINT fk_usuario
 FOREIGN KEY (id_usuario)
 REFERENCES usuario(id)
-ON DELETE CASCADE
+ON DELETE CASCADE,
+
+CONSTRAINT fk_cpf_usuario
+FOREIGN KEY (cpf_usuario)
+REFERENCES usuario(cpf)
 );
 
 INSERT INTO usuario (cpf, senha, rg, nomeCompleto, dataNascimento, numero) VALUES ();
-INSERT INTO contaBancaria (id_usuario, saldo) VALUES ();
+INSERT INTO contaBancaria (id_usuario, cpf_usuario, saldo) VALUES ();
 
 SELECT * FROM usuario;
 SELECT * FROM contaBancaria;
