@@ -189,15 +189,14 @@ public class Banco {
 
                     psContaCpf.executeUpdate();
 
-                    System.out.println("\nTransferência realizada com sucesso.");
+                    System.out.println("\nA transferência de R$ " + dinheiroTransferencia + " para a conta de CPF: " + contaCpf + ", foi realizada com sucesso.");
                     Menu.menuPosLogin();
                 }
-                
             }
         }
 
         catch(SQLException e){
-
+            e.printStackTrace();
         }
 
     }
